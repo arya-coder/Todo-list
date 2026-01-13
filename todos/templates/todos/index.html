@@ -3,15 +3,14 @@
 {% block content %}
 <div class="card shadow-sm mb-4">
     <div class="card-body">
-        <!-- {% include 'todos/partials/todo_form.html' %} -->
-        <form hx-post="{% url 'add_todo' %}" hx-target="#todo-list" hx-swap="afterbegin" hx-on::after-request="this.reset()" hx-ext="json-enc">
+        <form hx-post="{% url 'add_todo' %}" hx-target="#todo-list" hx-swap="innerHTML" hx-on::after-request="this.reset()" hx-ext="json-enc">
             {% csrf_token %}
             <div class="mb-2">
-                <input type="text" name="title" class="form-control" placeholder="Title" required>
+                <input type="text" name="title" class="form-control" placeholder="Title" required autocomplete="off"> 
             </div>
             
             <div class="input-group">
-                <input type="text" name="description" class="form-control" placeholder="Description (optional)">
+                <input type="text" name="description" class="form-control" placeholder="Description (optional)" autocomplete="off">
                 <button class="btn btn-primary" type="submit">Add Task</button>
             </div>
          </form> 

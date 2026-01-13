@@ -1,17 +1,40 @@
- 
+<li class="list-group-item bg-light"> <form hx-put="{% url 'update_todo' todo.id %}" 
+          hx-target="closest li" 
+          hx-swap="outerHTML" 
+          hx-ext="json-enc"
+          autocomplete="off">
 
-<li class="list-group-item">
-    <form {% if todo %} hx-put="{% url 'update_todo' todo.id %}" {% endif %} hx-target="closest li" hx-swap="outerHTML" hx-ext="json-enc" class="d-flex gap-2">
         {% csrf_token %}
-      <div class="mb-2">
-            <input type="text" name="title" class="form-control fw-bold" value="{{ todo.title }}" placeholder="Title" required>
-        </div>
+
         <div class="mb-2">
-            <textarea name="description" class="form-control form-control-sm" placeholder="Description (optional)" rows="2">{{ todo.description|default_if_none:"" }}</textarea>
+            <input type="text" 
+                   name="title" 
+                   class="form-control fw-bold" 
+                   value="{{ todo.title }}" 
+                   placeholder="Task Title" 
+                   required 
+                   autofocus> 
         </div>
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-success btn-sm">Save Changes</button>
-            <button hx-get="{% url 'index' %}" hx-target="body" class="btn btn-secondary btn-sm">Cancel</button>
+
+        <div class="mb-2">
+            <textarea name="description" 
+                      class="form-control form-control-sm" 
+                      placeholder="Add a description (optional)..." 
+                      rows="2">{{ todo.description|default:"" }}</textarea>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <button type="button" 
+                    class="btn btn-danger btn-sm"
+                    hx-get="{% url 'update_todo' todo.id %}?cancel=true" 
+                    hx-target="closest li" 
+                    hx-swap="outerHTML">
+                Cancel
+            </button>
+            
+            <button type="submit" class="btn btn-success btn-sm">
+                Save Changes
+            </button>
         </div>
     </form>
 </li>

@@ -1,0 +1,32 @@
+{% extends 'todos/base.html' %}
+
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <!-- {% include 'todos/partials/todo_form.html' %} -->
+        <form hx-post="{% url 'add_todo' %}" hx-target="#todo-list" hx-swap="afterbegin" hx-on::after-request="this.reset()" hx-ext="json-enc">
+            {% csrf_token %}
+            <div class="mb-2">
+                <input type="text" name="title" class="form-control" placeholder="Title" required>
+            </div>
+            
+            <div class="input-group">
+                <input type="text" name="description" class="form-control" placeholder="Description (optional)">
+                <button class="btn btn-primary" type="submit">Add Task</button>
+            </div>
+         </form> 
+    </div>
+</div>
+
+ <div id = "todo-zone">
+     {% include 'todos/partials/todo_list.html' %}
+ </div>
+
+
+<div class="modal fade" id="historyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" id="history-content">
+            </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% for event in history %}
+    <li class="list-group-item"
+        {# --- INFINITE SCROLL LOGIC --- #}
+        {% if forloop.last and history.has_next %}
+            {# 1. Trigger when this specific item scrolls into view #}
+            hx-trigger="revealed"
+            
+            {# 2. Get the next page #}
+            hx-get="{% url 'todo_history' todo.pk %}?page={{ history.next_page_number }}"
+            
+            {# 3. Put the new items AFTER this item #}
+            hx-swap="afterend"
+        {% endif %}
+        {# ----------------------------- #}
+    >
+        <strong>{{ event.get_event_type_display }}</strong>
+        <small class="text-muted float-end">{{ event.timestamp|date:"M d, Y H:i" }}</small>
+        {% if event.details %}
+            <br><small class="text-secondary">{{ event.details }}</small>
+        {% endif %}
+    </li>
+{% empty %}
+    {% if not history.has_previous %}
+        <li class="list-group-item">No history found.</li>
+    {% endif %}
+{% endfor %}

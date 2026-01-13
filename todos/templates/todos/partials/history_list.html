@@ -1,0 +1,15 @@
+ 
+
+<div class="modal-header">
+    <h5 class="modal-title">History: {{ todo.title }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+    <ul class="list-group list-group-flush">
+        {# Load the first page of items #}
+        {% include 'todos/partials/history_list_items.html' %}
+    </ul>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

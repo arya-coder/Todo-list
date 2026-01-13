@@ -1,0 +1,45 @@
+<li class="list-group-item d-flex justify-content-between align-items-center {% if todo.is_completed %}bg-light{% endif %}">
+    <div class="d-flex align-items-center gap-3">
+        <input class="form-check-input mt-0" type="checkbox" 
+               {% if todo.is_completed %}checked{% endif %}
+               hx-patch="{% url 'toggle_todo' todo.id %}" 
+               hx-target="closest li" 
+               hx-swap="outerHTML">
+
+        <div class="d-flex flex-column">
+            <span class="{% if todo.is_completed %}text-decoration-line-through text-muted{% endif %}">
+                {{ todo.title }}
+            </span>
+            {% if todo.description %}
+            <small class="text-muted">{{ todo.description }}</small>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="btn-group">
+        <button class="btn btn-sm btn-info text-white" 
+                hx-get="{% url 'todo_history' todo.id %}" 
+                hx-target="#history-content" 
+                data-bs-toggle="modal" 
+                data-bs-target="#historyModal">
+            History
+        </button>
+        
+        <button class="btn btn-sm btn-warning" 
+                hx-get="{% url 'update_todo' todo.id %}" 
+                hx-target="closest li" 
+                hx-swap="outerHTML">
+
+            Edit
+        </button>
+        
+        <button class="btn btn-sm btn-danger" 
+                hx-delete="{% url 'delete_todo' todo.id %}?page={{page_obj.number}}" 
+                hx-target="#todo-zone" 
+                hx-swap="innerHTML"
+                hx-confirm="Are you sure?">
+            Delete
+        </button>
+    </div>
+</li>

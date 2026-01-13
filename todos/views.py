@@ -90,6 +90,8 @@ def add_todo(request):
 def update_todo(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     
+    if request.GET.get('cancel'):
+        return render(request,'todos/partials/todo_item.html',{'todo':todo})
     if request.method == 'PUT':
         # 1. Parse JSON data from the request body
         try:
@@ -97,18 +99,20 @@ def update_todo(request, pk):
         except json.JSONDecodeError:
             data = {}  # Handle empty or invalid JSON
 
-        # 2. Update fields
+       
         # Note: We use .get() on the dictionary 'data', not request.POST
-        todo.title = data.get('title')
-        todo.description = data.get('description')
-        
-        # 3. Validation and Save
-        if todo.title:
+        new_title = data.get('title')
+        new_description= data.get('description')
+
+        # 2. Logic to check for changes and update content
+        if new_title and (todo.title!=new_title or todo.description != new_description):
+            todo.title = new_title
+            todo.description = new_description
             todo.save()
-            return render(request, 'todos/partials/todo_item.html', {'todo': todo})
-        else:
-            # Handle validation error (optional but good practice)
-            return HttpResponse("Title is required", status=400)
+    
+            
+        return render(request, 'todos/partials/todo_item.html', {'todo': todo})
+ 
     
     # GET request: Return the form populated with existing data
     return render(request, 'todos/partials/todo_form.html', {'todo': todo})
